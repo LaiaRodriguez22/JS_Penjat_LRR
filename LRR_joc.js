@@ -16,8 +16,8 @@ function inputUser(){
         console.log("exit");
     }
     else{
-        console.log("Valor incorrecte. Només pots introduir 1, 2 o 3.");
-
+      //bucle
+      console.log("tornar a preguntar");
     }
 }
 
