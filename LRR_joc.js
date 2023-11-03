@@ -1,23 +1,29 @@
-function inputUser(){
-    let inputUser = Math.floor(prompt("Entra un numero: [1,2,3].", "Exemple: 3"));
+/* VARIABLES GLOBALS */
 
-    if(inputUser === 1){
-        //CRIDEM FUNCIO JOC
-        jocInit();
-        console.log("aqui el joc");
-    }
-    else if(inputUser === 2){
-        //CRIDEM FUNCIO ESTADISTICA
-        dadesEstadistiques();
-        console.log("estadistiques");
-    }
-    else if(inputUser === 3){
-        //EXIT   
-        console.log("exit");
-    }
-    else{
-      //bucle
-      console.log("tornar a preguntar");
+function inputUser(){
+    let inputUser;
+    
+    while (true) {
+        inputUser = Math.floor(prompt("Entra un número: [1, 2, 3].", "Exemple: 3"));
+
+        if (inputUser === 1) {
+            // CRIDEM FUNCIO JOC
+            jocInit();
+            console.log("aqui el joc");
+            break; 
+        } else if (inputUser === 2) {
+            // CRIDEM FUNCIO ESTADISTICA
+            dadesEstadistiques();
+            console.log("estadistiques");
+            break;
+        } else if (inputUser === 3) {
+            // EXIT
+            console.log("exit");
+            break; 
+        } else {
+            // TORNEM A PREGUNTAR
+            console.log("Ep, t'he dit que entris 1, 2 o 3.");
+        }
     }
 }
 
