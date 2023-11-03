@@ -42,6 +42,6 @@ function dadesEstadistiques(){
 /* APARTAT EXIT GAME */
 
 function exitGame(){
-
+    console.log("Trukutru end game");
 }
 
