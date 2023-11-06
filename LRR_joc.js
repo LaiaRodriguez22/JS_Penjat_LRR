@@ -1,5 +1,11 @@
 /* VARIABLES GLOBALS */
 
+let partidesJugades=0;
+let partidesGuanyades=0;
+let partidesGuanyadesPerc=0;
+let partidesPerdudes=0;
+let partidesPerdudesPerc=0;
+
 function inputUser(){
     let inputUser;
     
@@ -30,18 +36,20 @@ function inputUser(){
 /* APARTAT JOC */
 
 function jocInit(){
-
+    console.log(" start game");
 }
 
 /* APARTAT ESTADISTICA */
 
 function dadesEstadistiques(){
-
+    console.log("Total de partides jugades: " + partidesJugades);
+    console.log("Partides guanyades (%" + partidesGuanyadesPerc + "): " + partidesGuanyades);
+    console.log("Partides perdudes (%" + partidesPerdudesPerc + "): " + partidesPerdudes);
 }
 
 /* APARTAT EXIT GAME */
 
 function exitGame(){
-    console.log("Trukutru end game");
+    console.log("Exit game");
 }
 
