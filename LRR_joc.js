@@ -15,12 +15,10 @@ function inputUser(){
         if (inputUser === 1) {
             // CRIDEM FUNCIO JOC
             jocInit();
-            console.log("aqui el joc");
             break; 
         } else if (inputUser === 2) {
             // CRIDEM FUNCIO ESTADISTICA
             dadesEstadistiques();
-            console.log("estadistiques");
             break;
         } else if (inputUser === 3) {
             // EXIT
