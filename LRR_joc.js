@@ -136,6 +136,8 @@ function dadesEstadistiques(){
     } else {
         console.log("No hi ha estadístiques disponibles.");
     }
+
+    inputUser();
 }
 
 /* APARTAT EXIT GAME */
