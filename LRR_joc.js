@@ -36,7 +36,7 @@ function inputUser(){
 }
 
 /* APARTAT JOC */
-
+//FALTAR FER QUE SIGUI TOT LOWERCASE. 
 function jocInit(){
 
     //CONTADORS I RESET VARIABLES. 
@@ -52,26 +52,26 @@ function jocInit(){
 
     while (true) {
         
-        // Mostrem l'estat actual del joc
+        // PARAULA ACTUAL
         mostraParaulaActual(paraulaActual);
 
-        // Demanem una lletra al jugador
+        // DEMANA LLETRA
         let lletra = demanaLletra();
 
-        // Comprovem si la lletra és correcta
+        // COMPROVA LLETRA
         let correcta = lletraCorrecta(paraulaSecreta, lletra);
 
-        // Actualitzem l'estat del joc
+        // TORNA A IMPRIMIR PARAULA ACTUAL
         if (correcta) {
             actualitzaParaulaActual(paraulaActual, lletra);
         } else {
             lletresFallides.push(lletra);
         }
 
-        // Mostrem les lletres fallides
+        // LLETRES FALLADES
         mostraLletresFallides(lletresFallides);
 
-        // Comprovem si el joc ha acabat
+        // HA ACABAT O NO?
         if (acabat(paraulaActual, intentsFallits)) {
             break;
         }
@@ -112,15 +112,30 @@ function mostraLletresFallides(lletresFallides) {
 }
 
 function acabat(paraulaActual, intentsFallits) {
+    if (paraulaActual.join("") !== paraulaSecreta && intentsFallits >= 6) {
+        partidesPerdudes++;
+    }else if(paraulaActual.join("") === paraulaSecreta){
+        partidesGuanyades++;
+    }
+
     return paraulaActual.join("") === paraulaSecreta || intentsFallits >= 6;
 }
 
 /* APARTAT ESTADISTICA */
 
 function dadesEstadistiques(){
-    console.log("Total de partides jugades: " + partidesJugades);
-    console.log("Partides guanyades (%" + partidesGuanyadesPerc + "): " + partidesGuanyades);
-    console.log("Partides perdudes (%" + partidesPerdudesPerc + "): " + partidesPerdudes);
+    console.log("Estadístiques del joc");
+    console.log("Partides jugades: " + partidesJugades);
+
+    if (partidesJugades > 0) {
+        partidesGuanyadesPerc = (partidesGuanyades / partidesJugades) * 100;
+        partidesPerdudesPerc = (partidesPerdudes / partidesJugades) * 100;
+
+        console.log("Partides guanyades: (" + partidesGuanyadesPerc + "%) "+  partidesGuanyades);
+        console.log("Partides perdudes: (" + partidesPerdudesPerc + "%) " + partidesPerdudes);
+    } else {
+        console.log("No hi ha estadístiques disponibles.");
+    }
 }
 
 /* APARTAT EXIT GAME */
