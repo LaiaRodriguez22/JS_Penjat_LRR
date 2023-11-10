@@ -13,9 +13,9 @@
 
         .btn-joc{
             background-color:#7ED348;
-            border-radius: 25px;
+            border-radius: 8px;
             border:none;
-            padding:25px;
+            padding:15px;
             color:#000;
             font-size:20px;
             box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
@@ -24,9 +24,9 @@
         .btn-estadistiques{
             box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
             background-color:#009DD1;
-            border-radius: 25px;
+            border-radius: 8px;
             border:none;
-            padding:25px;
+            padding:15px;
             color:#000;
             font-size:20px;
         }
@@ -36,6 +36,19 @@
             display: flex;
             gap: 5px;
             justify-content: center;
+        }
+        
+        .abecedari > button{
+            width: auto;
+            height: auto;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding:5px;
+            border:1px solid red;
+            background-color: cyan;
+            color: rgb(49, 48, 48);
+            font-weight: 800;
         }
     </style>
 </head>
@@ -53,7 +66,7 @@
     2- Estadistiques. <br>
     3- Sortir. <br>
 
-
+    <h1 align="center">Part grafica</h1>
     <div class="btn-center">
         <button onclick="jocInit()" class="btn-joc">Iniciar una partida</button>
         <button onclick="dadesEstadistiques()" class="btn-estadistiques">Estadistiques</button>
@@ -62,8 +75,9 @@
     <div id="jocPenjat"></div>
     <img src="" id="imatgePenjat"/>
     <div id="lletresUtilitzades"></div>    
+    <!--EN JUANMA HA DIT QUE NO ES EXACTAMENT AIXO, PENSAR-->
     <!--AIXO HA DE COMENÇAR AMB DISPLAY NONE I LLAVORS DISPLAY FLEX-->
-    <div class="abecedari">
+    <div class="abecedari" id="abecedari">
         <button>A</button>
         <button>B</button>
         <button>C</button>

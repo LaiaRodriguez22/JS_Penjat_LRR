@@ -137,6 +137,7 @@ function dadesEstadistiques(){
         console.log("No hi ha estadístiques disponibles.");
     }
 
+    //Mantenim el bucle perque salti el menú 
     inputUser();
 }
 
