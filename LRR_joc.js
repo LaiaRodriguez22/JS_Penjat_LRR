@@ -45,7 +45,7 @@ function jocInit(){
     lletresFallides = [];
 
     // PARAULA QUE ENTRA ADMIN
-    paraulaSecreta = prompt("Entra LA paraula");
+    paraulaSecreta = prompt("Entra LA paraula").toUpperCase();
 
     // PARAULA TALLADA
     let paraulaActual = Array(paraulaSecreta.length).fill("_");
@@ -56,7 +56,7 @@ function jocInit(){
         mostraParaulaActual(paraulaActual);
 
         // DEMANA LLETRA
-        let lletra = demanaLletra();
+        let lletra = demanaLletra().toUpperCase();
 
         // COMPROVA LLETRA
         let correcta = lletraCorrecta(paraulaSecreta, lletra);
@@ -121,7 +121,69 @@ function acabat(paraulaActual, intentsFallits) {
     return paraulaActual.join("") === paraulaSecreta || intentsFallits >= 6;
 }
 
-/* APARTAT ESTADISTICA */
+/* APARTAT INTERFICIE GR + JUGABILITAT */
+
+function novaPartida(){
+    //CONTADORS I RESET VARIABLES. 
+    partidesJugades++;
+    intentsFallits = 0;
+    lletresFallides = [];
+ 
+    // PARAULA QUE ENTRA ADMIN
+    paraulaSecreta = prompt("Entra LA paraula");
+
+    // PARAULA TALLADA
+    let paraulaActual = Array(paraulaSecreta.length).fill("_");
+
+    //AFEGIM LA PARAULA ACTUAL AL DIV "jocPenjat"
+    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
+
+    //AFEGIM L'ABECEDARI DINÀMIC AL DIV "ABECEDARI"
+    abecadariDinamic();
+}
+
+function clickLletra(lletra){
+
+    //SI LA LLETRA JA HA ESTAT INTRODUIDA, NO FEU  res
+    if (lletresFallides.includes(lletra)) {
+        return;
+    }
+    
+    //SI LA LLETRA ESTÀ PRESENT A LA PARAULA SECRETA, ACTUALITZA LA PARAULA ACTUAL
+    for (let i = 0; i < paraulaSecreta.length; i++) {
+        if (paraulaSecreta[i] === lletra) {
+            paraulaActual[i] = lletra;
+        }
+    }
+    
+    //REESCRIVEM LA PARAULA ACTUAL AL DIV "jocPenjat"
+    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
+    
+    //SI LA PARAULA ACTUAL ÉS LA PARAULA SECRETA, L'USUARI HA GUANYAT
+    if (paraulaActual.join("") === paraulaSecreta) {
+        alert("Enhorabona, has guanyat!");
+    }
+}
+
+function abecadariDinamic(){
+    const lletres = "abcdefghijklmnopqrstuvwxyz".split("");
+
+    const abecedari = lletres.map((lletra) => {
+        return `<button onclick="clickLletra('${lletra}')">${lletra}</button>`;
+    });
+
+    document.getElementById("abecedari").innerHTML = abecedari.join("");
+}
+
+function mostrarEstadistica() {
+    //localStorage.
+}
+
+function acabarPartida() {
+
+}
+
+/* APARTAT ESTADISTICA --- NO GRAFIC */
 
 function dadesEstadistiques(){
     console.log("Estadístiques del joc");
