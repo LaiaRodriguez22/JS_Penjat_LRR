@@ -135,14 +135,17 @@ function novaPartida(){
     // PARAULA TALLADA
     let paraulaActual = Array(paraulaSecreta.length).fill("_");
 
-    //AFEGIM LA PARAULA ACTUAL AL DIV "jocPenjat"
+    //AFEGIM LA PARAULA ACTUAL
     document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
 
-    //AFEGIM L'ABECEDARI DINÀMIC AL DIV "ABECEDARI"
+    //AFEGIM L'ABECEDARI DINAMIC
     abecadariDinamic();
+
+    //AFEGIM PENJAT DINAMIC. 
+    canviaImatgePenjat(intentsFallits);
 }
 
-function clickLletra(lletra){
+function clickLletra(lletra){ //AIXO NO FUNKA.
 
     //SI LA LLETRA JA HA ESTAT INTRODUIDA, NO FEU  res
     if (lletresFallides.includes(lletra)) {
@@ -156,17 +159,12 @@ function clickLletra(lletra){
         }
     }
     
-    //REESCRIVEM LA PARAULA ACTUAL AL DIV "jocPenjat"
+    //REESCRIVEM LA PARAULA ACTUAL AL HTML
     document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
-    
-    //SI LA PARAULA ACTUAL ÉS LA PARAULA SECRETA, L'USUARI HA GUANYAT
-    if (paraulaActual.join("") === paraulaSecreta) {
-        alert("Enhorabona, has guanyat!");
-    }
 }
 
 function abecadariDinamic(){
-    const lletres = "abcdefghijklmnopqrstuvwxyz".split("");
+    const lletres = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
 
     const abecedari = lletres.map((lletra) => {
         return `<button onclick="clickLletra('${lletra}')">${lletra}</button>`;
@@ -175,11 +173,18 @@ function abecadariDinamic(){
     document.getElementById("abecedari").innerHTML = abecedari.join("");
 }
 
+function canviaImatgePenjat(intentsFallits) {
+    const imatgesPenjat = ["penjat_0", "penjat_1", "penjat_2", "penjat_3", "penjat_4", "penjat_5", "penjat_6"];
+    const rutaHtml = window.location.href;
+    const rutaImatge = rutaHtml.substring(0, rutaHtml.lastIndexOf("/")) + "/penjat_" + intentsFallits + ".png";
+    document.getElementById("imatgePenjat").src = rutaImatge;
+}
+
 function mostrarEstadistica() {
     //localStorage.
 }
 
-function acabarPartida() {
+function acabatGrafic() {
 
 }
 

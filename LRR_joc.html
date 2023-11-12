@@ -31,14 +31,14 @@
             font-size:20px;
         }
 
-        .abecedari{
+        #abecedari{
             margin-top:20px;
             display: flex;
             gap: 5px;
             justify-content: center;
         }
         
-        .abecedari > button{
+        #abecedari > button{
             width: auto;
             height: auto;
             border: none;
@@ -49,6 +49,13 @@
             background-color: cyan;
             color: rgb(49, 48, 48);
             font-weight: 800;
+        }
+
+        #jocPenjat{
+            margin-top:50px;
+            margin: auto;
+            text-align: center;
+            font-size:40px;
         }
     </style>
 </head>
@@ -73,10 +80,10 @@
     </div>
 
     <div id="jocPenjat"></div>
-    <img src="" id="imatgePenjat"/>
+    <center><img src="" id="imatgePenjat"/></center>
     <div id="lletresUtilitzades"></div>    
     <!--EN JUANMA HA DIT QUE NO ES EXACTAMENT AIXO, PENSAR
         AIXO HA DE COMENÇAR AMB DISPLAY NONE I LLAVORS DISPLAY FLEX-->
-    <div class="abecedari" id="abecedari"></div>
+    <div id="abecedari"></div>
 </body>
 </html>
