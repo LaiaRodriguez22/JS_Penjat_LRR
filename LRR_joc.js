@@ -145,9 +145,22 @@ function novaPartida(){
     canviaImatgePenjat(intentsFallits);
 }
 
-function clickLletra(lletra){ //AIXO NO FUNKA.
+function abecadariDinamic(){
+    const lletres = "abcdefghijklmnñopqrstuvwxyz".toUpperCase().split("");
 
+    const abecedari = lletres.map((lletra) => {
+        return `<button onclick="clickLletra('${lletra}')">${lletra}</button>`;
+    });
+
+    document.getElementById("abecedari").innerHTML = abecedari.join("");
+}
+
+function clickLletra(lletra){ 
+    alert("HAS FET CLICK A AQUESTA LLETRA: " + lletra);
+    
+    //li hauria de passar paraulaActual? hi ha algo que em deixo
     //SI LA LLETRA JA HA ESTAT INTRODUIDA, NO FEU  res
+    /*
     if (lletresFallides.includes(lletra)) {
         return;
     }
@@ -159,18 +172,8 @@ function clickLletra(lletra){ //AIXO NO FUNKA.
         }
     }
     
-    //REESCRIVEM LA PARAULA ACTUAL AL HTML
-    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
-}
-
-function abecadariDinamic(){
-    const lletres = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
-
-    const abecedari = lletres.map((lletra) => {
-        return `<button onclick="clickLletra('${lletra}')">${lletra}</button>`;
-    });
-
-    document.getElementById("abecedari").innerHTML = abecedari.join("");
+    //REESCRIBIM LA PARAULA ACTUAL AL HTML
+    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");*/
 }
 
 function canviaImatgePenjat(intentsFallits) {
