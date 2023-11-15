@@ -7,8 +7,12 @@ let partidesPerdudes = 0;
 let partidesPerdudesPerc = 0;
 
 let paraulaSecreta;
-let intentsFallits;
+let paraulaActual;
 let lletresFallides;
+
+let intentsFallits;
+
+let guanyat = false;
 
 function inputUser(){
     let inputUser;
@@ -35,8 +39,23 @@ function inputUser(){
     }
 }
 
-/* APARTAT JOC */
-//FALTAR FER QUE SIGUI TOT LOWERCASE. 
+/*
+    ---------------------- APARTAT JOC ----------------------------- 
+    EL JOC FA TOTES LES ENTRADES I DEMES EN MAYUS.  
+    NO COMPROVA SI UNA LLETRA HA SIGUT ENTRADA DUES O MES VEGADES. 
+
+    jocInit : bucle de menú
+    mostraParaulaActual: mostra la paraula amb '_ _ _ _'
+    demanaLletra: demana lletra al usuari i mira si va de A-Z
+    lletraCorrecta:
+    actualitzaParaulaActual:
+    mostraLletresFallides:
+    acabat: ha esgotat els intents o ha guanyat
+    dadesEstadistiques: mostra les estadistiques
+    exit: quan el user entra 3 a jocInit o quan 
+
+*/
+
 function jocInit(){
 
     //CONTADORS I RESET VARIABLES. 
@@ -45,10 +64,12 @@ function jocInit(){
     lletresFallides = [];
 
     // PARAULA QUE ENTRA ADMIN
-    paraulaSecreta = prompt("Entra LA paraula").toUpperCase();
+    do {
+        paraulaSecreta = prompt("Entra LA paraula").toUpperCase();
+    } while (paraulaSecreta.length <= 1);
 
     // PARAULA TALLADA
-    let paraulaActual = Array(paraulaSecreta.length).fill("_");
+    paraulaActual = Array(paraulaSecreta.length).fill("_");
 
     while (true) {
         
@@ -59,7 +80,7 @@ function jocInit(){
         let lletra = demanaLletra().toUpperCase();
 
         // COMPROVA LLETRA
-        let correcta = lletraCorrecta(paraulaSecreta, lletra);
+        let correcta = lletraCorrecte(paraulaSecreta, lletra);
 
         // TORNA A IMPRIMIR PARAULA ACTUAL
         if (correcta) {
@@ -71,7 +92,7 @@ function jocInit(){
         // LLETRES FALLADES
         mostraLletresFallides(lletresFallides);
 
-        // HA ACABAT O NO?
+        // HA ACABAT O NO
         if (acabat(paraulaActual, intentsFallits)) {
             break;
         }
@@ -85,17 +106,17 @@ function mostraParaulaActual(paraulaActual) {
 function demanaLletra() {
     let lletra = prompt("Entra una lletra:");
     while (lletra.length !== 1 || !lletra.match(/[a-zA-Z]/)) {
-        lletra = prompt("La lletra ha de tenir una lletra.");
+        lletra = prompt("La lletra ha de tenir una lletra.").toUpperCase();
     }
     return lletra;
 }
 
-function lletraCorrecta(paraulaSecreta, lletra) {
-    let correcta = paraulaSecreta.includes(lletra);
-    if (!correcta) {
+function lletraCorrecte(paraulaSecreta, lletra) {
+    let correcte = paraulaSecreta.includes(lletra);
+    if (!correcte) {
         intentsFallits++;
     }
-    return correcta;
+    return correcte;
 }
 
 function actualitzaParaulaActual(paraulaActual, lletra) {
@@ -119,79 +140,8 @@ function acabat(paraulaActual, intentsFallits) {
     }
 
     return paraulaActual.join("") === paraulaSecreta || intentsFallits >= 6;
+    exitGame();
 }
-
-/* APARTAT INTERFICIE GR + JUGABILITAT */
-
-function novaPartida(){
-    //CONTADORS I RESET VARIABLES. 
-    partidesJugades++;
-    intentsFallits = 0;
-    lletresFallides = [];
- 
-    // PARAULA QUE ENTRA ADMIN
-    paraulaSecreta = prompt("Entra LA paraula");
-
-    // PARAULA TALLADA
-    let paraulaActual = Array(paraulaSecreta.length).fill("_");
-
-    //AFEGIM LA PARAULA ACTUAL
-    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
-
-    //AFEGIM L'ABECEDARI DINAMIC
-    abecadariDinamic();
-
-    //AFEGIM PENJAT DINAMIC. 
-    canviaImatgePenjat(intentsFallits);
-}
-
-function abecadariDinamic(){
-    const lletres = "abcdefghijklmnñopqrstuvwxyz".toUpperCase().split("");
-
-    const abecedari = lletres.map((lletra) => {
-        return `<button onclick="clickLletra('${lletra}')">${lletra}</button>`;
-    });
-
-    document.getElementById("abecedari").innerHTML = abecedari.join("");
-}
-
-function clickLletra(lletra){ 
-    alert("HAS FET CLICK A AQUESTA LLETRA: " + lletra);
-    
-    //li hauria de passar paraulaActual? hi ha algo que em deixo
-    //SI LA LLETRA JA HA ESTAT INTRODUIDA, NO FEU  res
-    /*
-    if (lletresFallides.includes(lletra)) {
-        return;
-    }
-    
-    //SI LA LLETRA ESTÀ PRESENT A LA PARAULA SECRETA, ACTUALITZA LA PARAULA ACTUAL
-    for (let i = 0; i < paraulaSecreta.length; i++) {
-        if (paraulaSecreta[i] === lletra) {
-            paraulaActual[i] = lletra;
-        }
-    }
-    
-    //REESCRIBIM LA PARAULA ACTUAL AL HTML
-    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");*/
-}
-
-function canviaImatgePenjat(intentsFallits) {
-    const imatgesPenjat = ["penjat_0", "penjat_1", "penjat_2", "penjat_3", "penjat_4", "penjat_5", "penjat_6"];
-    const rutaHtml = window.location.href;
-    const rutaImatge = rutaHtml.substring(0, rutaHtml.lastIndexOf("/")) + "/penjat_" + intentsFallits + ".png";
-    document.getElementById("imatgePenjat").src = rutaImatge;
-}
-
-function mostrarEstadistica() {
-    //localStorage.
-}
-
-function acabatGrafic() {
-
-}
-
-/* APARTAT ESTADISTICA --- NO GRAFIC */
 
 function dadesEstadistiques(){
     console.log("Estadístiques del joc");
@@ -207,13 +157,182 @@ function dadesEstadistiques(){
         console.log("No hi ha estadístiques disponibles.");
     }
 
-    //Mantenim el bucle perque salti el menú 
     inputUser();
 }
 
-/* APARTAT EXIT GAME */
-
 function exitGame(){
     console.log("Exit game");
+}
+
+/* 
+    ------------ APARTAT INTERFICIE GR + JUGABILITAT  --------------- 
+    DE MOMENT NO CONTABILITZA RES DE ESTADISTIQUES, PERO LA JUGABILITAT
+    JA FUNKA PERFECTE. DESACTIVA BUTONS I TOT UWU
+
+    novaPartida: incia la partida quan el usuari dona click al boto. 
+    abecadariDinamic: crea els botons despres de que l'usuari entri la paraula. 
+    clickLletra: 
+    actualitzaVisualitzacio:
+    canviaImatgePenjat:
+    desactivarButons:
+    acabatGrafic:
+    mostrarEstadistica:
+
+*/
+
+function novaPartida(){
+    //CONTADORS I RESET VARIABLES. 
+    partidesJugades++;
+    intentsFallits = 0;
+    lletresFallides = [];
+    guanyat = false;
+
+    // PARAULA QUE ENTRA ADMIN
+    do {
+        paraulaSecreta = prompt("Entra LA paraula").toUpperCase();
+    } while (paraulaSecreta.length <= 1);
+
+    // PARAULA TALLADA
+    paraulaActual = Array(paraulaSecreta.length).fill("_");
+
+    resetMissatges(intentsFallits, lletresFallides);
+
+    //AFEGIM LA PARAULA ACTUAL
+    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
+
+    //AFEGIM L'ABECEDARI DINAMIC
+    abecadariDinamic();
+
+    //AQUI NEM A RESETEJAR TAMBÉ ELS MISSATGES DE LLETRES I INTENTS -ELSE FINAL-
+    mostraIntentsLletresF(intentsFallits, lletresFallides,guanyat);
+
+    //AFEGIM PENJAT DINAMIC. 
+    canviaImatgePenjat(intentsFallits);
+}
+
+
+function abecadariDinamic(){
+    //BOTONS DINAMICS
+    const lletres = "abcdefghijklmnñopqrstuvwxyz".toUpperCase().split("");
+
+    const abecedari = lletres.map((lletra) => {
+        return `<button class="lletraDinamica" onclick="clickLletra('${lletra}')">${lletra}</button>`;
+    });
+
+    document.getElementById("abecedari").innerHTML = abecedari.join("");
+}
+
+function clickLletra(lletra){ 
+    let lletraCorrecta = false;
+
+    console.log("HAS FET CLICK A AQUESTA LLETRA: " + lletra);
+
+    console.log("PARAULA ACTUAL ANTES DE ACTUALIZAR: " + paraulaActual);
+    console.log("PARAULA SECRETA: " + paraulaSecreta);
+
+    if (lletresFallides.includes(lletra) || paraulaActual.includes(lletra)) {
+        //AQUI NO SÉ SI HAURIA DE TORNAR A FER UN DISPLAY NONE O KE. 
+        return;
+    }
+
+    for (let i = 0; i < paraulaSecreta.length; i++) {
+        if (paraulaSecreta[i] === lletra) {
+            paraulaActual[i] = lletra;
+            lletraCorrecta = true;
+        }
+    }
+
+    if (!lletraCorrecta) {
+        intentsFallits++;
+        lletresFallides.push(lletra);
+        console.log("Intents fallits: " + intentsFallits);
+
+        canviaImatgePenjat(intentsFallits);
+
+        if (intentsFallits >= 6) {
+            mostraIntentsLletresF(intentsFallits, lletresFallides, guanyat);
+            acabatGrafic(intentsFallits, lletresFallides, guanyat);
+        }
+    }
+
+    if (!paraulaActual.includes("_")) {
+        guanyat=true;
+        acabatGrafic(intentsFallits, lletresFallides, guanyat);
+    }
+
+    //SEGUEIX IMPRIMINT LES LLETRES E INTENTS A LA FUNCIO
+    mostraIntentsLletresF(intentsFallits, lletresFallides);
+}
+
+function canviaImatgePenjat(intentsFallits) {
+    const imatgesPenjat = ["penjat_0", "penjat_1", "penjat_2", "penjat_3", "penjat_4", "penjat_5", "penjat_6"];
+    const rutaHtml = window.location.href;
+
+    //SI EL NÚMERO D'INTENTS FALLITS ÉS MAJOR QUE 6, NO ES CANVIA D'IMATGE 
+    if (intentsFallits >= 6) {
+        rutaImatge = rutaHtml.substring(0, rutaHtml.lastIndexOf("/")) + "/penjat_6.png";
+    } else {
+        rutaImatge = rutaHtml.substring(0, rutaHtml.lastIndexOf("/")) + "/penjat_" + intentsFallits + ".png";
+    }
+
+    document.getElementById("imatgePenjat").src = rutaImatge;
+}
+
+function desactivarButons() {
+    //BORRA BOTONS DINAMICS A TRAVES DE LA CLASSE LLETRADINAMICA
+    //VOLIA FER-HO DIRECTAMENT X GETELEMENTBYID PERO NO EM DEIXABA
+    const parentElement = document.getElementById("abecedari");
+    const buttons = document.getElementsByClassName("lletraDinamica");
+
+    while (buttons.length > 0) {
+        parentElement.removeChild(buttons[0]);
+    }
+}
+
+function acabatGrafic(intentsFallits, lletresFallides, guanyat) {
+    desactivarButons();
+
+    if(guanyat){
+        console.log("guanyador");
+        finalMissatges(intentsFallits, lletresFallides, guanyat);
+    }
+    else{
+        console.log("NO HAS GUANYAT, PRINGAT.");
+        finalMissatges(intentsFallits, lletresFallides, guanyat);
+    }
+}
+
+function mostraIntentsLletresF(intentsFallits, lletresFallides, guanyat) {
+    document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
+
+    if (intentsFallits < 6) { //DEIXA EL JOC A MITJES
+        resetMissatges(intentsFallits, lletresFallides);
+    } else {
+        finalMissatges(intentsFallits, lletresFallides, guanyat);
+    }
+}
+
+function resetMissatges(intentsFallits, lletresFallides){
+    document.getElementById("lletresFallides").innerHTML = "Lletres fallades: " + lletresFallides.join(", ");
+    document.getElementById("intentsRestants").innerHTML = "Intents: " + intentsFallits + "/6";
+}
+
+function finalMissatges(intentsFallits, lletresFallides){
+    if (intentsFallits >= 6){ 
+        document.getElementById("lletresFallides").innerHTML = "HAS PERDUT. ";
+        document.getElementById("intentsRestants").innerHTML = "HAS PERDUT.";
+        document.getElementById("intentsRestants").style.display = 'none';
+    }
+    else{ 
+        document.getElementById("lletresFallides").innerHTML = "HAS GUANYAT. ";
+        document.getElementById("intentsRestants").innerHTML = "HAS GUANYAT.";
+        document.getElementById("intentsRestants").style.display = 'none';
+    }
+}
+
+// LOCAL STORAGE QUE ES EL QUE EM FALTA MIRAR. 
+
+function mostrarEstadistica() {
+    //localStorage.
 }
 
