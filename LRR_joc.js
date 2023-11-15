@@ -214,7 +214,7 @@ function abecadariDinamic(){
     const lletres = "abcdefghijklmnñopqrstuvwxyz".toUpperCase().split("");
 
     const abecedari = lletres.map((lletra) => {
-        return `<button class="lletraDinamica" onclick="clickLletra('${lletra}')">${lletra}</button>`;
+        return `<button class="lletraDinamica" id="${lletra}" onclick="clickLletra('${lletra}')">${lletra}</button>`;
     });
 
     document.getElementById("abecedari").innerHTML = abecedari.join("");
@@ -225,11 +225,11 @@ function clickLletra(lletra){
 
     console.log("HAS FET CLICK A AQUESTA LLETRA: " + lletra);
 
-    console.log("PARAULA ACTUAL ANTES DE ACTUALIZAR: " + paraulaActual);
+    console.log("PARAULA ACTUAL: " + paraulaActual);
     console.log("PARAULA SECRETA: " + paraulaSecreta);
 
     if (lletresFallides.includes(lletra) || paraulaActual.includes(lletra)) {
-        //AQUI NO SÉ SI HAURIA DE TORNAR A FER UN DISPLAY NONE O KE. 
+        desactivarBotoLletra(lletra);
         return;
     }
 
@@ -237,6 +237,9 @@ function clickLletra(lletra){
         if (paraulaSecreta[i] === lletra) {
             paraulaActual[i] = lletra;
             lletraCorrecta = true;
+
+            //DESACTIVAR BOTO. 
+            desactivarBotoLletra(lletra);
         }
     }
 
@@ -252,6 +255,8 @@ function clickLletra(lletra){
         mostraIntentsLletresF(intentsFallits, lletresFallides);
 
         canviaImatgePenjat(intentsFallits);
+
+        desactivarBotoLletra(lletra);
 
         if (intentsFallits >= 6) {
             guanyat=false;
@@ -279,9 +284,21 @@ function canviaImatgePenjat(intentsFallits) {
     document.getElementById("imatgePenjat").src = rutaImatge;
 }
 
+function desactivarBotoLletra(lletra){
+    //console.log("TRUKUTRU, TENS AQUESTA LLETRA: " + lletra);
+
+    let botoLletra = document.getElementById(lletra);
+
+    //console.log(botoLletra);
+    
+    if (botoLletra) {
+        botoLletra.disabled = true;
+    }
+}
+
 function desactivarButons() {
     //BORRA BOTONS DINAMICS A TRAVES DE LA CLASSE LLETRADINAMICA
-    //VOLIA FER-HO DIRECTAMENT X GETELEMENTBYID PERO NO EM DEIXABA
+    //VOLIA FER-HO DIRECTAMENT X GETELEMENTBYID PERO NO EM DEIXAVA
     const parentElement = document.getElementById("abecedari");
     const buttons = document.getElementsByClassName("lletraDinamica");
 
@@ -302,10 +319,11 @@ function acabatGrafic(guanyat) {
 }
 
 function mostraIntentsLletresF(intentsFallits, lletresFallides) {
-    //HAIG DE FER BLOCK PERQUE SINO VE DEL GUANYAR -SI FA PARTIDA SEGUIDA- I NO ES MOSTRA.     
-    document.getElementById("intentsRestants").style.display = 'block';
     document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
     document.getElementById("lletresFallides").innerHTML = "Lletres fallades: " + lletresFallides.join(", ");
+
+    //HAIG DE FER BLOCK PERQUE SINO VE DEL GUANYAR -SI FA PARTIDA SEGUIDA- I NO ES MOSTRA.     
+    document.getElementById("intentsRestants").style.display = 'block';
     document.getElementById("intentsRestants").innerHTML = "Intents: " + intentsFallits + "/6";
 
 }
