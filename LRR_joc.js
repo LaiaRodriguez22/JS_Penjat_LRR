@@ -172,11 +172,12 @@ function exitGame(){
     novaPartida: incia la partida quan el usuari dona click al boto. 
     abecadariDinamic: crea els botons despres de que l'usuari entri la paraula. 
     clickLletra: 
-    actualitzaVisualitzacio:
     canviaImatgePenjat:
     desactivarButons:
-    acabatGrafic:
-    mostrarEstadistica:
+    acabarGrafic:
+    mostraIntentsLletresF:
+    mostraMissFinal:
+
 
 */
 
@@ -195,7 +196,8 @@ function novaPartida(){
     // PARAULA TALLADA
     paraulaActual = Array(paraulaSecreta.length).fill("_");
 
-    resetMissatges(intentsFallits, lletresFallides);
+    //AQUI NEM A RESETEJAR TAMBÉ ELS MISSATGES DE LLETRES I INTENTS -ELSE FINAL-
+    mostraIntentsLletresF(intentsFallits, lletresFallides);
 
     //AFEGIM LA PARAULA ACTUAL
     document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
@@ -203,13 +205,9 @@ function novaPartida(){
     //AFEGIM L'ABECEDARI DINAMIC
     abecadariDinamic();
 
-    //AQUI NEM A RESETEJAR TAMBÉ ELS MISSATGES DE LLETRES I INTENTS -ELSE FINAL-
-    mostraIntentsLletresF(intentsFallits, lletresFallides,guanyat);
-
     //AFEGIM PENJAT DINAMIC. 
     canviaImatgePenjat(intentsFallits);
 }
-
 
 function abecadariDinamic(){
     //BOTONS DINAMICS
@@ -242,26 +240,29 @@ function clickLletra(lletra){
         }
     }
 
+    //SEGUEIX IMPRIMINT LES LLETRES E INTENTS A LA FUNCIO
+    mostraIntentsLletresF(intentsFallits, lletresFallides);
+
     if (!lletraCorrecta) {
         intentsFallits++;
         lletresFallides.push(lletra);
         console.log("Intents fallits: " + intentsFallits);
 
+        //SEGUEIX IMPRIMINT LES LLETRES E INTENTS A LA FUNCIO
+        mostraIntentsLletresF(intentsFallits, lletresFallides);
+
         canviaImatgePenjat(intentsFallits);
 
         if (intentsFallits >= 6) {
-            mostraIntentsLletresF(intentsFallits, lletresFallides, guanyat);
-            acabatGrafic(intentsFallits, lletresFallides, guanyat);
+            guanyat=false;
+            acabatGrafic(guanyat);
         }
     }
 
     if (!paraulaActual.includes("_")) {
         guanyat=true;
-        acabatGrafic(intentsFallits, lletresFallides, guanyat);
+        acabatGrafic(guanyat);
     }
-
-    //SEGUEIX IMPRIMINT LES LLETRES E INTENTS A LA FUNCIO
-    mostraIntentsLletresF(intentsFallits, lletresFallides);
 }
 
 function canviaImatgePenjat(intentsFallits) {
@@ -289,48 +290,35 @@ function desactivarButons() {
     }
 }
 
-function acabatGrafic(intentsFallits, lletresFallides, guanyat) {
+function acabatGrafic(guanyat) {
     desactivarButons();
 
     if(guanyat){
-        console.log("guanyador");
-        finalMissatges(intentsFallits, lletresFallides, guanyat);
+        mostraMissFinal(guanyat);
     }
     else{
-        console.log("NO HAS GUANYAT, PRINGAT.");
-        finalMissatges(intentsFallits, lletresFallides, guanyat);
+        mostraMissFinal();
     }
 }
 
-function mostraIntentsLletresF(intentsFallits, lletresFallides, guanyat) {
+function mostraIntentsLletresF(intentsFallits, lletresFallides) {
+    //HAIG DE FER BLOCK PERQUE SINO VE DEL GUANYAR -SI FA PARTIDA SEGUIDA- I NO ES MOSTRA.     
+    document.getElementById("intentsRestants").style.display = 'block';
     document.getElementById("jocPenjat").innerHTML = paraulaActual.join(" ");
-
-    if (intentsFallits < 6) { //DEIXA EL JOC A MITJES
-        resetMissatges(intentsFallits, lletresFallides);
-    } else {
-        finalMissatges(intentsFallits, lletresFallides, guanyat);
-    }
-}
-
-function resetMissatges(intentsFallits, lletresFallides){
     document.getElementById("lletresFallides").innerHTML = "Lletres fallades: " + lletresFallides.join(", ");
     document.getElementById("intentsRestants").innerHTML = "Intents: " + intentsFallits + "/6";
+
 }
 
-function finalMissatges(intentsFallits, lletresFallides){
-    if (intentsFallits >= 6){ 
-        document.getElementById("lletresFallides").innerHTML = "HAS PERDUT. ";
-        document.getElementById("intentsRestants").innerHTML = "HAS PERDUT.";
+function mostraMissFinal(guanyat){
+    if(guanyat){
+        document.getElementById("lletresFallides").innerHTML = "HAS GUANYAT";
         document.getElementById("intentsRestants").style.display = 'none';
-    }
-    else{ 
-        document.getElementById("lletresFallides").innerHTML = "HAS GUANYAT. ";
-        document.getElementById("intentsRestants").innerHTML = "HAS GUANYAT.";
+    }else{
+        document.getElementById("lletresFallides").innerHTML = "HAS PERDUT";
         document.getElementById("intentsRestants").style.display = 'none';
     }
 }
-
-// LOCAL STORAGE QUE ES EL QUE EM FALTA MIRAR. 
 
 function mostrarEstadistica() {
     //localStorage.
