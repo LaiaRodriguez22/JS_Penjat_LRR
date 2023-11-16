@@ -277,6 +277,7 @@ function clickLletra(lletra){
 }
 
 function canviaImatgePenjat(intentsFallits) {
+    const imatgesPenjat = ["penjat_0", "penjat_1", "penjat_2", "penjat_3", "penjat_4", "penjat_5", "penjat_6"];
     const rutaHtml = window.location.href;
 
     //SI EL NÚMERO D'INTENTS FALLITS ÉS MAJOR QUE 6, NO ES CANVIA D'IMATGE 
