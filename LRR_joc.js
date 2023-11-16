@@ -358,7 +358,7 @@ function mostrarEstadistica() {
         <p>Partides jugades: ${partidesJugades}</p>
         <p>Intents fallits: ${intentsFallits}</p>
         <p>Lletres fallades: ${lletresFallides.join(", ")}</p>
-        <p>Guanyat: ${guanyat ? 'Sí' : 'No'}</p>
+        <p>Has guanyat la última partida: ${guanyat ? 'Sí' : 'No'}</p>
         <p>Partides guanyades: ${partidesGuanyades}</p>
         <p>Partides perdudes: ${partidesPerdudes}</p>
         <button onclick="eliminarLocalStorage()">Eliminar dades</button>`;
