@@ -343,6 +343,24 @@ function mostraMissFinal(guanyat){
     }
 }
 
+window.eliminarLocalStorage = function(){
+    console.log("bon dia estic aqui");
+    localStorage.removeItem('partidesGuanyades');
+    localStorage.removeItem('partidesPerdudes');
+
+    //RESETAJEM GLOBALS. 
+    partidesGuanyades = 0;
+    partidesPerdudes = 0;
+
+    //FORA FINESTRA I DADES. 
+    window.opener.location.reload();
+    window.close();
+
+    //NO TANCA I NO ENTENC ARA KE
+    console.log(partidesGuanyades);
+    console.log(partidesPerdudes);
+}
+
 function mostrarEstadistica() {
     //PREGUNTAR SI TAMBÉ HAIG DE FER LOCALSTORAGE DE LLETRES FALLADES. 
 
@@ -361,24 +379,9 @@ function mostrarEstadistica() {
         <p>Has guanyat la última partida: ${guanyat ? 'Sí' : 'No'}</p>
         <p>Partides guanyades: ${partidesGuanyades}</p>
         <p>Partides perdudes: ${partidesPerdudes}</p>
-        <button onclick="eliminarLocalStorage()">Eliminar dades</button>`;
-        //EL BOTÓ DE LOCALSTORAGE NO FUNKA, ENCARA NO SÉ PRQ, TOCA DINAR. 
+        <button onclick="window.opener.eliminarLocalStorage()">Eliminar dades</button>`;
+        //EL BOTÓ DE BORRAR... NO. 
 
     // ARRANQUEM EL HTML
     finestraEstad.document.body.innerHTML = htmlEstadistica;
 }
-
-function eliminarLocalStorage(){
-    console.log("bon dia estic aqui");
-    localStorage.removeItem('partidesGuanyades');
-    localStorage.removeItem('partidesPerdudes');
-
-    //RESETAJEM GLOBALS. 
-    partidesGuanyades = 0;
-    partidesPerdudes = 0;
-
-    //FORA FINESTRA I DADES. 
-    window.opener.location.reload();
-    window.close();
-}
-
