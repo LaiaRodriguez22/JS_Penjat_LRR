@@ -260,18 +260,23 @@ function clickLletra(lletra){
 
         if (intentsFallits >= 6) {
             guanyat=false;
+            partidesPerdudes++;
+            localStorage.setItem('partidesGuanyades', partidesGuanyades);
+            localStorage.setItem('partidesPerdudes', partidesPerdudes);
             acabatGrafic(guanyat);
         }
     }
 
     if (!paraulaActual.includes("_")) {
         guanyat=true;
+        partidesGuanyades++;
+        localStorage.setItem('partidesGuanyades', partidesGuanyades);
+        localStorage.setItem('partidesPerdudes', partidesPerdudes);
         acabatGrafic(guanyat);
     }
 }
 
 function canviaImatgePenjat(intentsFallits) {
-    const imatgesPenjat = ["penjat_0", "penjat_1", "penjat_2", "penjat_3", "penjat_4", "penjat_5", "penjat_6"];
     const rutaHtml = window.location.href;
 
     //SI EL NÚMERO D'INTENTS FALLITS ÉS MAJOR QUE 6, NO ES CANVIA D'IMATGE 
@@ -332,13 +337,48 @@ function mostraMissFinal(guanyat){
     if(guanyat){
         document.getElementById("lletresFallides").innerHTML = "HAS GUANYAT";
         document.getElementById("intentsRestants").style.display = 'none';
-    }else{
+    }else{       
         document.getElementById("lletresFallides").innerHTML = "HAS PERDUT";
         document.getElementById("intentsRestants").style.display = 'none';
     }
 }
 
 function mostrarEstadistica() {
-    //localStorage.
+    //PREGUNTAR SI TAMBÉ HAIG DE FER LOCALSTORAGE DE LLETRES FALLADES. 
+
+    // FEM GET DEL LOCAL STORAGE. 
+    partidesGuanyades = localStorage.getItem('partidesGuanyades') || 0;
+    partidesPerdudes = localStorage.getItem('partidesPerdudes') || 0;
+
+    const finestraEstad = window.open('', 'Estadistiques', 'width=400,height=300');
+
+    // CONTINGUT
+    const htmlEstadistica = `
+        <h2>Estadistiques</h2>
+        <p>Partides jugades: ${partidesJugades}</p>
+        <p>Intents fallits: ${intentsFallits}</p>
+        <p>Lletres fallades: ${lletresFallides.join(", ")}</p>
+        <p>Guanyat: ${guanyat ? 'Sí' : 'No'}</p>
+        <p>Partides guanyades: ${partidesGuanyades}</p>
+        <p>Partides perdudes: ${partidesPerdudes}</p>
+        <button onclick="eliminarLocalStorage()">Eliminar dades</button>`;
+        //EL BOTÓ DE LOCALSTORAGE NO FUNKA, ENCARA NO SÉ PRQ, TOCA DINAR. 
+
+    // ARRANQUEM EL HTML
+    finestraEstad.document.body.innerHTML = htmlEstadistica;
+}
+
+function eliminarLocalStorage(){
+    console.log("bon dia estic aqui");
+    localStorage.removeItem('partidesGuanyades');
+    localStorage.removeItem('partidesPerdudes');
+
+    //RESETAJEM GLOBALS. 
+    partidesGuanyades = 0;
+    partidesPerdudes = 0;
+
+    //FORA FINESTRA I DADES. 
+    window.opener.location.reload();
+    window.close();
 }
 
