@@ -47,13 +47,6 @@ function inputUser(){
     jocInit : bucle de menú
     mostraParaulaActual: mostra la paraula amb '_ _ _ _'
     demanaLletra: demana lletra al usuari i mira si va de A-Z
-    lletraCorrecta:
-    actualitzaParaulaActual:
-    mostraLletresFallides:
-    acabat: ha esgotat els intents o ha guanyat
-    dadesEstadistiques: mostra les estadistiques
-    exit: quan el user entra 3 a jocInit o quan 
-
 */
 
 function jocInit(){
@@ -166,19 +159,20 @@ function exitGame(){
 
 /* 
     ------------ APARTAT INTERFICIE GR + JUGABILITAT  --------------- 
-    DE MOMENT NO CONTABILITZA RES DE ESTADISTIQUES, PERO LA JUGABILITAT
-    JA FUNKA PERFECTE. DESACTIVA BUTONS I TOT UWU
+    EL JOC FA TOTES LES ENTRADES I DEMES EN MAYUS.  
+    AQUESTA VERSIO SI QUE COMPROVA SI UNA LLETRA HA CLICKADA MÉS DE UNA VEGADA.
+    SI HO HA SIGUT, EL BOTÓ ES DESACTIVA -ES MOSTRA EN NEGRE-
 
     novaPartida: incia la partida quan el usuari dona click al boto. 
     abecadariDinamic: crea els botons despres de que l'usuari entri la paraula. 
-    clickLletra: 
-    canviaImatgePenjat:
-    desactivarButons:
-    acabarGrafic:
-    mostraIntentsLletresF:
-    mostraMissFinal:
-
-
+    clickLletra: jugabilitat en aquesta funcio. 
+    canviaImatgePenjat: canvia l'imatge segons els intents de l'usuari
+    desactivarButons: desactiva els botons ja clickats o bé, quan la partida ja s'ha acabat.
+    acabarGrafic: crida desactivarButons i llavors va a mostrarMissFinal amb la guanyat.
+    mostraIntentsLletresF: son els missatges que veura l'usuari mentres juga. 
+    mostraMissFinal: mostra els missatges finals, depenguent de la variable guanyat. 
+    eliminarLocalStorage: s'encarrega de resetejar les globals si l'usuari interacciona amb el boto
+    mostrarEstadistica: obre nova finestra i imprimeix les variables de partidesGuanyades i Perdudes
 */
 
 function novaPartida(){
@@ -193,7 +187,6 @@ function novaPartida(){
         paraulaSecreta = prompt("Entra LA paraula").toUpperCase();
     } while (paraulaSecreta.length <= 1);
 
-    // PARAULA TALLADA
     paraulaActual = Array(paraulaSecreta.length).fill("_");
 
     //AQUI NEM A RESETEJAR TAMBÉ ELS MISSATGES DE LLETRES I INTENTS -ELSE FINAL-
@@ -223,10 +216,10 @@ function abecadariDinamic(){
 function clickLletra(lletra){ 
     let lletraCorrecta = false;
 
-    console.log("HAS FET CLICK A AQUESTA LLETRA: " + lletra);
+    //console.log("HAS FET CLICK A AQUESTA LLETRA: " + lletra);
 
-    console.log("PARAULA ACTUAL: " + paraulaActual);
-    console.log("PARAULA SECRETA: " + paraulaSecreta);
+    //console.log("PARAULA ACTUAL: " + paraulaActual);
+    //console.log("PARAULA SECRETA: " + paraulaSecreta);
 
     if (lletresFallides.includes(lletra) || paraulaActual.includes(lletra)) {
         desactivarBotoLletra(lletra);
@@ -249,7 +242,7 @@ function clickLletra(lletra){
     if (!lletraCorrecta) {
         intentsFallits++;
         lletresFallides.push(lletra);
-        console.log("Intents fallits: " + intentsFallits);
+        //console.log("Intents fallits: " + intentsFallits);
 
         //SEGUEIX IMPRIMINT LES LLETRES E INTENTS A LA FUNCIO
         mostraIntentsLletresF(intentsFallits, lletresFallides);
@@ -260,6 +253,7 @@ function clickLletra(lletra){
 
         if (intentsFallits >= 6) {
             guanyat=false;
+            //PER EL MOSTRAR LOCAL STORAGE CORRECTE
             partidesPerdudes++;
             localStorage.setItem('partidesGuanyades', partidesGuanyades);
             localStorage.setItem('partidesPerdudes', partidesPerdudes);
@@ -269,6 +263,7 @@ function clickLletra(lletra){
 
     if (!paraulaActual.includes("_")) {
         guanyat=true;
+        //PER EL LOCAL STORAGE
         partidesGuanyades++;
         localStorage.setItem('partidesGuanyades', partidesGuanyades);
         localStorage.setItem('partidesPerdudes', partidesPerdudes);
@@ -277,8 +272,8 @@ function clickLletra(lletra){
 }
 
 function canviaImatgePenjat(intentsFallits) {
-    const imatgesPenjat = ["penjat_0", "penjat_1", "penjat_2", "penjat_3", "penjat_4", "penjat_5", "penjat_6"];
     const rutaHtml = window.location.href;
+    let rutaImatge;
 
     //SI EL NÚMERO D'INTENTS FALLITS ÉS MAJOR QUE 6, NO ES CANVIA D'IMATGE 
     if (intentsFallits >= 6) {
@@ -291,12 +286,8 @@ function canviaImatgePenjat(intentsFallits) {
 }
 
 function desactivarBotoLletra(lletra){
-    //console.log("TRUKUTRU, TENS AQUESTA LLETRA: " + lletra);
-
     let botoLletra = document.getElementById(lletra);
-
     //console.log(botoLletra);
-    
     if (botoLletra) {
         botoLletra.disabled = true;
     }
@@ -304,7 +295,7 @@ function desactivarBotoLletra(lletra){
 
 function desactivarButons() {
     //BORRA BOTONS DINAMICS A TRAVES DE LA CLASSE LLETRADINAMICA
-    //VOLIA FER-HO DIRECTAMENT X GETELEMENTBYID PERO NO EM DEIXAVA
+    //AIXO ES CRIDA SI EL USER ARRIBA A ACABATGRAFIC. 
     const parentElement = document.getElementById("abecedari");
     const buttons = document.getElementsByClassName("lletraDinamica");
 
@@ -315,13 +306,7 @@ function desactivarButons() {
 
 function acabatGrafic(guanyat) {
     desactivarButons();
-
-    if(guanyat){
-        mostraMissFinal(guanyat);
-    }
-    else{
-        mostraMissFinal();
-    }
+    mostraMissFinal(guanyat);
 }
 
 function mostraIntentsLletresF(intentsFallits, lletresFallides) {
@@ -344,27 +329,16 @@ function mostraMissFinal(guanyat){
     }
 }
 
-window.eliminarLocalStorage = function(){
-    console.log("bon dia estic aqui");
+function eliminarLocalStorage(){
     localStorage.removeItem('partidesGuanyades');
     localStorage.removeItem('partidesPerdudes');
 
-    //RESETAJEM GLOBALS. 
+    //RESET GLOBALS.  
     partidesGuanyades = 0;
     partidesPerdudes = 0;
-
-    //FORA FINESTRA I DADES. 
-    window.opener.location.reload();
-    window.close();
-
-    //NO TANCA I NO ENTENC ARA KE
-    console.log(partidesGuanyades);
-    console.log(partidesPerdudes);
 }
 
 function mostrarEstadistica() {
-    //PREGUNTAR SI TAMBÉ HAIG DE FER LOCALSTORAGE DE LLETRES FALLADES. 
-
     // FEM GET DEL LOCAL STORAGE. 
     partidesGuanyades = localStorage.getItem('partidesGuanyades') || 0;
     partidesPerdudes = localStorage.getItem('partidesPerdudes') || 0;
@@ -375,13 +349,8 @@ function mostrarEstadistica() {
     const htmlEstadistica = `
         <h2>Estadistiques</h2>
         <p>Partides jugades: ${partidesJugades}</p>
-        <p>Intents fallits: ${intentsFallits}</p>
-        <p>Lletres fallades: ${lletresFallides.join(", ")}</p>
-        <p>Has guanyat la última partida: ${guanyat ? 'Sí' : 'No'}</p>
         <p>Partides guanyades: ${partidesGuanyades}</p>
-        <p>Partides perdudes: ${partidesPerdudes}</p>
-        <button onclick="window.opener.eliminarLocalStorage()">Eliminar dades</button>`;
-        //EL BOTÓ DE BORRAR... NO. 
+        <p>Partides perdudes: ${partidesPerdudes}</p>`;
 
     // ARRANQUEM EL HTML
     finestraEstad.document.body.innerHTML = htmlEstadistica;

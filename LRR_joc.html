@@ -35,6 +35,17 @@
             font-size:20px;
         }
 
+        .btn-borrarls{
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+            background-color:#b68c18;
+            font-family: 'Open Sans', sans-serif;
+            border-radius: 8px;
+            border:none;
+            padding:15px;
+            color:#000;
+            font-size:20px;
+        }
+
         #abecedari{
             margin-top:20px;
             display: flex;
@@ -57,6 +68,10 @@
             color:#ccc;
             font-size: 20px;
             font-weight: 800;
+        }
+
+        #abecedari > button:disabled{
+            background-color:rgb(102, 29, 29);
         }
 
         #jocPenjat{
@@ -95,22 +110,25 @@
     
     <!--
         La primera versió en consola + prompt
-        La segona versió amb HTML interface
     -->
     <h1 align="center">Joc en consola</h1>
-
+    <center>
     <button onclick="inputUser()">Exercici</button>
     <br><br>
     <h2>Llegenda:</h2>
     1- Jugar.<br>
     2- Estadistiques. <br>
     3- Sortir. <br>
-
-    <h1 align="center">Part grafica</h1>
+    </center>
+    <!--
+        La segona versió amb HTML interface
+    -->
+    <h1 align="center">Part gràfica</h1>
     <br><br>
     <div class="btn-center">
         <button onclick="novaPartida()" class="btn-joc">Iniciar una partida</button>
         <button onclick="mostrarEstadistica()" class="btn-estadistiques">Estadistiques</button>
+        <button onclick="eliminarLocalStorage()" class="btn-borrarls">Borrar LS</button>
     </div>
     <br><br>
     <div id="jocPenjat"></div>
